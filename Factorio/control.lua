@@ -28,6 +28,16 @@ end
 
 script.on_init(ONLOAD)
 
+script.on_event( defines.events.on_built_entity, ONBUILD )
+script.on_event( defines.events.on_robot_built_entity, ONBUILD )
+script.on_event( defines.events.on_pre_player_mined_item, ONREMOVE )
+script.on_event( defines.events.on_robot_pre_mined, ONREMOVE )
+script.on_event( defines.events.on_entity_died, ONREMOVE )
+
+
+--[[
+    Transfer Chest, write to the file
+]]
 script.on_event({defines.events.on_tick}, 
     function (e)
         if e.tick % 60 == 0 then
@@ -40,13 +50,12 @@ script.on_event({defines.events.on_tick},
                     end
                 end
             end
-            game.write_file("mylog.log", saveString)
+            game.write_file("toMC.dat", saveString)
         end
     end
 )
 
-script.on_event( defines.events.on_built_entity, ONBUILD )
-script.on_event( defines.events.on_robot_built_entity, ONBUILD )
-script.on_event( defines.events.on_pre_player_mined_item, ONREMOVE )
-script.on_event( defines.events.on_robot_pre_mined, ONREMOVE )
-script.on_event( defines.events.on_entity_died, ONREMOVE )
+--[[
+    Transfer Chest, read from file. Things probably shouldnt be inserted here
+]]
+
