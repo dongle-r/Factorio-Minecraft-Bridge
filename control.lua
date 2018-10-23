@@ -31,14 +31,16 @@ script.on_init(ONLOAD)
 script.on_event({defines.events.on_tick}, 
     function (e)
         if e.tick % 60 == 0 then
+            local saveString = ""
             for k, transfer in pairs (global.transferChests) do
                 if transfer.valid then
                     local inventory = transfer.get_inventory(defines.inventory.chest)
                     if not inventory.is_empty() then
-                        game.write_file("mylog.log", "there is stuff in the chest")
+                        saveString = saveString .. inventory[1].name .. " : " .. inventory[1].count .. "\n"
                     end
                 end
             end
+            game.write_file("mylog.log", saveString)
         end
     end
 )
