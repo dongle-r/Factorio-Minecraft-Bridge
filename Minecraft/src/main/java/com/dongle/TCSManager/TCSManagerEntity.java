@@ -21,7 +21,9 @@ public class TCSManagerEntity  extends TileEntity implements ITickable{
 				Map<Integer, TCSEntity> entList = FMCBridge.instance.tcsEntityList;
 				try {
 					FileWriter fileWriter = new FileWriter("testFile.dat");
-					fileWriter.write(Integer.toString(entList.size()));
+					for(Integer key : entList.keySet()){
+						fileWriter.write("Ent ID: " + key.toString() + "\n");
+					}
 					fileWriter.close();
 						
 				} catch (IOException e) {

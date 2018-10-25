@@ -21,7 +21,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TCSBlock extends Block implements ITileEntityProvider {
 	
 	public static final int GUI_ID = 1;
-	//private int _entId;
 	
 	public TCSBlock(){
 		super(Material.ROCK);
@@ -48,6 +47,7 @@ public class TCSBlock extends Block implements ITileEntityProvider {
 			_entId = FMCBridge.instance.addTCS(temp);
 			temp.setEntId(_entId);
 			temp.setAdded(true);
+			System.out.println("Adding from createNew");
 			System.out.println(_entId);
 		}
 		return temp;
