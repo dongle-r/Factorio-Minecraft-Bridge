@@ -1,7 +1,8 @@
 package com.dongle.FMCBridge;
 
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.dongle.TCSChest.TCSEntity;
 import com.dongle.proxy.CommonProxy;
@@ -30,7 +31,7 @@ public class FMCBridge
     		return new ItemStack(Items.BLAZE_ROD);
     	}
     };
-    public ArrayList<TCSEntity> tcsEntityList;
+    
     
     @SidedProxy(clientSide = "com.dongle.proxy.ClientProxy", serverSide = "com.dongle.proxy.ServerProxy")
     public static CommonProxy proxy;
@@ -43,11 +44,39 @@ public class FMCBridge
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
         proxy.init(e);
+        tcsEntityList = new HashMap<Integer, TCSEntity>();
     }
 
+    
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
         proxy.postInit(e);
-        tcsEntityList = new ArrayList<TCSEntity>();
+    }
+    
+    //Below is the handling for adding and updating the Transfer Chest Sender (TCS) Logic 
+    //It uses a map and an entId to assign the TCSEntities to a map with a specific id.
+    public Map<Integer, TCSEntity> tcsEntityList;
+    public int entId = 0;
+    
+    //This add deals with adding a newly placed block to the list.
+    public int addTCS(TCSEntity ent){
+    	do{
+    		entId++;
+    	}while(tcsEntityList.containsKey(entId));
+    	
+    	tcsEntityList.put(entId, ent);
+    	return entId;
+    }
+    
+    //This add is the ensure that the already placed blocks are added back to the list.
+    public int addTCS(int id, TCSEntity ent){
+    	tcsEntityList.put(id, ent);
+    	return entId;
+    }
+    
+   //Removes the TCSEntity from the map on block destroy
+    public void removeTCS(int x){
+    	System.out.println("Ent to remove: " + x);
+    	TCSEntity temp = tcsEntityList.remove(x);
     }
 }

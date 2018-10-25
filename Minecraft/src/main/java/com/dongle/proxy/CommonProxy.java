@@ -5,6 +5,8 @@ import com.dongle.FMCBridge.ModBlocks;
 import com.dongle.TCSChest.TCSBlock;
 import com.dongle.TCSChest.TCSEntity;
 import com.dongle.TCSChest.TCSItem;
+import com.dongle.TCSManager.TCSManagerBlock;
+import com.dongle.TCSManager.TCSManagerEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -34,12 +36,16 @@ public class CommonProxy {
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
     	event.getRegistry().register(new TCSBlock());
     	GameRegistry.registerTileEntity(TCSEntity.class, FMCBridge.MODID + "_tcsblock");
+    	
+    	event.getRegistry().register(new TCSManagerBlock());
+    	GameRegistry.registerTileEntity(TCSManagerEntity.class, FMCBridge.MODID + "_tcsmanagerentity");
     }
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
     	event.getRegistry().register(new ItemBlock(ModBlocks.tcsblock).setRegistryName(ModBlocks.tcsblock.getRegistryName()));
-    	
+    	event.getRegistry().register(new ItemBlock(ModBlocks.tcsManagerBlock).setRegistryName(ModBlocks.tcsManagerBlock.getRegistryName()));
+
     	event.getRegistry().register(new TCSItem());
     }
 }

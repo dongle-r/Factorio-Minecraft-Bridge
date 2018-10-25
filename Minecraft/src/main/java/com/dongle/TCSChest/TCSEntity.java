@@ -1,7 +1,6 @@
 package com.dongle.TCSChest;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import com.dongle.FMCBridge.FMCBridge;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,10 +11,23 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TCSEntity extends TileEntity implements ITickable{
+public class TCSEntity extends TileEntity implements ITickable {
 
 	public static final int SIZE = 1;
-	private int ticks;
+	private int entId;
+	private boolean added;
+	
+	public void setEntId(int x){
+		entId = x;
+	}
+	
+	public int getEntId(){
+		return entId;
+	}
+	
+	public void setAdded(boolean flag){
+		added = flag;
+	}
 	
 	private ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE){
 		@Override
@@ -30,12 +42,16 @@ public class TCSEntity extends TileEntity implements ITickable{
         if (compound.hasKey("items")) {
             itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
         }
+        if(compound.hasKey("entId")){
+        	entId = compound.getInteger("entId");
+        }
     }
 	
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setTag("items", itemStackHandler.serializeNBT());
+        compound.setInteger("entId", entId);
         return compound;
     }
 	
@@ -62,17 +78,11 @@ public class TCSEntity extends TileEntity implements ITickable{
 
 	@Override
 	public void update() {
-		if(!world.isRemote){
-			if(ticks%20 == 0){
-				ticks = 0;
-				try {
-					FileWriter fileWriter = new FileWriter("testFile.dat");
-					
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+		if(!added){
+			if(!FMCBridge.instance.tcsEntityList.containsKey(entId)){
+				FMCBridge.instance.addTCS(entId, this);
+				added = true;
 			}
 		}
-		ticks++;
 	}
 }
