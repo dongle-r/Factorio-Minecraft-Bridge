@@ -15,7 +15,7 @@ public class TCSEntity extends TileEntity implements ITickable {
 
 	public static final int SIZE = 1;
 	private int entId;
-	private boolean added = false;
+	boolean added = false;
 	
 	public void setEntId(int x){
 		entId = x;
@@ -78,11 +78,13 @@ public class TCSEntity extends TileEntity implements ITickable {
 
 	@Override
 	public void update() {
-		if(!added){
-			System.out.println("Adding from update");
-			if(!FMCBridge.instance.tcsEntityList.containsKey(entId)){
-				FMCBridge.instance.addTCS(entId, this);
-				added = true;
+		if(!world.isRemote){
+			if(!added){
+				System.out.println("Adding from update");
+				if(!FMCBridge.instance.tcsEntityList.containsKey(entId)){
+					FMCBridge.instance.addTCS(entId, this);
+					added = true;
+				}
 			}
 		}
 	}
