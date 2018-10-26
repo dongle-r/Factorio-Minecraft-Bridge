@@ -1,5 +1,8 @@
 package com.dongle.proxy;
 
+import com.dongle.TCRChest.TCR;
+import com.dongle.TCRChest.TCREntity;
+import com.dongle.TCRChest.TCRGui;
 import com.dongle.TCSChest.TCS;
 import com.dongle.TCSChest.TCSEntity;
 import com.dongle.TCSChest.TCSGui;
@@ -19,6 +22,9 @@ public class GuiProxy implements IGuiHandler{
         if (te instanceof TCSEntity) {
             return new TCS(player.inventory, (TCSEntity) te);
         }
+        if (te instanceof TCREntity) {
+            return new TCR(player.inventory, (TCREntity) te);
+        }
         return null;
     }
 
@@ -29,6 +35,10 @@ public class GuiProxy implements IGuiHandler{
         if (te instanceof TCSEntity) {
         	TCSEntity containerTileEntity = (TCSEntity) te;
             return new TCSGui(containerTileEntity, new TCS(player.inventory, containerTileEntity));
+        }
+        if (te instanceof TCREntity) {
+        	TCREntity containerTileEntity = (TCREntity) te;
+            return new TCRGui(containerTileEntity, new TCR(player.inventory, containerTileEntity));
         }
         return null;
     }

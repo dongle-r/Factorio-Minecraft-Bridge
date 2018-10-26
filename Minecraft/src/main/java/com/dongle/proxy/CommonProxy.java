@@ -2,6 +2,8 @@ package com.dongle.proxy;
 
 import com.dongle.FMCBridge.FMCBridge;
 import com.dongle.FMCBridge.ModBlocks;
+import com.dongle.TCRChest.TCRBlock;
+import com.dongle.TCRChest.TCREntity;
 import com.dongle.TCSChest.TCSBlock;
 import com.dongle.TCSChest.TCSEntity;
 import com.dongle.TCSChest.TCSItem;
@@ -37,15 +39,17 @@ public class CommonProxy {
     	event.getRegistry().register(new TCSBlock());
     	GameRegistry.registerTileEntity(TCSEntity.class, FMCBridge.MODID + "_tcsblock");
     	
+    	event.getRegistry().register(new TCRBlock());
+    	GameRegistry.registerTileEntity(TCREntity.class, FMCBridge.MODID + "_tcrblock");
+    	
     	event.getRegistry().register(new TCSManagerBlock());
     	GameRegistry.registerTileEntity(TCSManagerEntity.class, FMCBridge.MODID + "_tcsmanagerentity");
     }
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
-    	event.getRegistry().register(new ItemBlock(ModBlocks.tcsblock).setRegistryName(ModBlocks.tcsblock.getRegistryName()));
+    	event.getRegistry().register(new ItemBlock(ModBlocks.tcsblock).setRegistryName(ModBlocks.tcsblock.getRegistryName())); 
+    	event.getRegistry().register(new ItemBlock(ModBlocks.tcrblock).setRegistryName(ModBlocks.tcrblock.getRegistryName()));
     	event.getRegistry().register(new ItemBlock(ModBlocks.tcsManagerBlock).setRegistryName(ModBlocks.tcsManagerBlock.getRegistryName()));
-
-    	event.getRegistry().register(new TCSItem());
     }
 }

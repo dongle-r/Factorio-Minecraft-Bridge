@@ -1,5 +1,6 @@
 package com.dongle.FMCBridge;
 
+import com.dongle.TCRChest.TCRBlock;
 import com.dongle.TCSChest.TCSBlock;
 import com.dongle.TCSManager.TCSManagerBlock;
 
@@ -12,12 +13,16 @@ public class ModBlocks {
 	@GameRegistry.ObjectHolder("fmcbridge:tcsblock")
 	public static TCSBlock tcsblock;
 	
+	@GameRegistry.ObjectHolder("fmcbridge:tcrblock")
+	public static TCRBlock tcrblock;
+	
 	@GameRegistry.ObjectHolder("fmcbridge:tcsmanagerblock")
 	public static TCSManagerBlock tcsManagerBlock;
 	
 	@SideOnly(Side.CLIENT)
 	public static void initModels(){
 		tcsblock.initModel();
+		tcrblock.initModel();
 		tcsManagerBlock.initModel();
 	}
 	
