@@ -1,9 +1,12 @@
 package com.dongle.TCRChest;
 
-import com.dongle.FMCBridge.FMCBridge;
-import com.dongle.TCSChest.TCSEntity;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -12,9 +15,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TCREntity extends TileEntity{
+public class TCREntity extends TileEntity implements ITickable{
 	
-	public static final int SIZE = 18;
+	public static final int SIZE = 27;
 	private int entId;
 	boolean added = false;
 	
@@ -77,18 +80,46 @@ public class TCREntity extends TileEntity{
         return super.getCapability(capability, facing);
     }
     
-    /*
+	int ticks = 0;
+
 	@Override
 	public void update() {
 		if(!world.isRemote){
-			if(!added){
-				System.out.println("Adding from update");
-				if(!FMCBridge.instance.tcsEntityList.containsKey(entId)){
-					FMCBridge.instance.addTCS(entId, this);
-					added = true;
+			if(ticks%20 == 0){
+				try {
+					FileReader fileRead = new FileReader("fromFactorio.dat");
+					BufferedReader br = new BufferedReader(fileRead);
+					String str = "";
+					ItemStackHandler tempInv = (ItemStackHandler) this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+					while((str=br.readLine())!= null){
+						String[] split = str.split("~");
+						for(int i = 0; i < tempInv.getSlots(); i++){
+							if(tempInv.getStackInSlot(i) != null){
+								ItemStack remainStack;
+								if(tempInv.getStackInSlot(i).getItem().getRegistryName().equals(split[0])){
+									ItemStack tempStack = tempInv.getStackInSlot(i);
+									if(tempStack.getCount() >= 64){
+										continue;
+									}
+									else{
+										tempStack.setCount(Integer.parseInt(split[1]));
+										remainStack = tempInv.insertItem(i, tempStack, false);
+										//Do something with overflow
+									}
+								}
+							}
+							else{
+								Item tempItem = Item.getByNameOrId(split[0]);
+								ItemStack tempStack = new ItemStack(tempItem, Integer.parseInt(split[1]));
+								tempInv.insertItem(i, tempStack, false);
+							}
+						}
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
 	}
-	*/
 }

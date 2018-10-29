@@ -1,5 +1,6 @@
 package com.dongle.TCSManager;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -35,10 +36,14 @@ public class TCSManagerEntity  extends TileEntity implements ITickable{
 								itemList.put(tempInv.getItem(), tempInv.getCount());
 							}
 						}
+						tempInv.setCount(0);
 					}
-					FileWriter fileWriter = new FileWriter("toFactorio.dat");
+					File fileToWrite = new File("toFactorio.dat");
+					while(!fileToWrite.canWrite()){
+					}
+					FileWriter fileWriter = new FileWriter("toFactorio.dat", true);
 					for(Item t : itemList.keySet()){
-						String writeString = t.getRegistryName() + " ~ " + itemList.get(t) + "\n";
+						String writeString = t.getRegistryName() + "~" + itemList.get(t) + "\n";
 						fileWriter.write(writeString);
 					}
 					fileWriter.close();
