@@ -1,0 +1,5 @@
+minecraft:diamond=science-pack-2
+minecraft:diamond_block=science-pack-3
+minecraft:stonebrick=concrete
+minecraft:iron_ingot=iron-plate
+minecraft:coal=coal

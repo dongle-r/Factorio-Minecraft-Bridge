@@ -42,19 +42,30 @@ namespace Factorio_MC_Bridge
 				facPath = sr.ReadLine();
 			}
 
+			ItemMappings<String, String> itemMappings = new ItemMappings<String, String>();
+			string itemMappingsPath = Path.Combine(Environment.CurrentDirectory, "item_mappings.txt");
+			FileStream fileStream = new FileStream(itemMappingsPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read);
+			StreamReader streamReader = new StreamReader(fileStream, Encoding.Default);
+			while (!streamReader.EndOfStream) {
+				String readString = streamReader.ReadLine();
+				String[] split = readString.Split('=');
+				itemMappings.Add(split[0], split[1]);
+			}
+
 			var rcon = new RCON(IPAddress.Parse("172.28.65.243"), 25525, "test");
 			while (true)
 			{
 				try
 				{
-					List<ItemPair> factorioItems = parseFactrio(facPath);
-					List<ItemPair> minecraftItems = parseMinecraft(mcPath);
+					List<ItemPair> factorioItems = parseFactrio(facPath, itemMappings);
+					List<ItemPair> minecraftItems = parseMinecraft(mcPath, itemMappings);
 					sendToFactorio(minecraftItems, rcon);
 					sendToMinecraft(factorioItems, mcPath);
 					Thread.Sleep(1000);
 				}
 				catch (Exception e) {
 					Console.WriteLine("Something went wrong. Moving past error.");
+					Console.WriteLine(e.Message);
 					continue;
 				}
 			}
@@ -91,7 +102,7 @@ namespace Factorio_MC_Bridge
 			}
 		}
 
-		public static List<ItemPair> parseMinecraft(String path)
+		public static List<ItemPair> parseMinecraft(String path, ItemMappings<String,String> mappings)
 		{
 			List<ItemPair> items = new List<ItemPair>();
 			String fullPath = Path.Combine(path, "toFactorio.dat");
@@ -120,47 +131,15 @@ namespace Factorio_MC_Bridge
 			sr.Close();
 			File.WriteAllText(fullPath, string.Empty);
 
-			//items = remapMC(items);
-			for (int i = 0; i < items.Count; i++)
-			{
-				if (items[i].name.Equals("minecraft:diamond"))
-				{
-					items[i].name = "science-pack-2";
-				}
-				if (items[i].name.Equals("minecraft:diamond_block"))
-				{
-					items[i].name = "science-pack-3";
-				}
-				if (items[i].name.Equals("minecraft:stonebrick"))
-				{
-					items[i].name = "concrete";
-				}
+			//Remap Items to the opposing item
+			for (int i = 0; i < items.Count; i++){
+				items[i].name = mappings.minecraft[items[i].name];
+	
 			}
 			return items;
 		}
 
-		public static List<ItemPair> remapMC(List<ItemPair> items) {
-			List<ItemPair> tempList = items;
-			for (int i = 0; i < items.Count; i++)
-			{
-				if (items[i].name.Equals("minecraft:diamond"))
-				{
-					items[i].name = "science-pack-2";
-				}
-				if (items[i].name.Equals("minecraft:diamond_block"))
-				{
-					items[i].name = "science-pack-3";
-				}
-				if (items[i].name.Equals("minecraft:stonebrick"))
-				{
-					items[i].name = "concrete";
-				}
-			}
-			return tempList;
-		}
-
-
-		public static List<ItemPair> parseFactrio(String path) {
+		public static List<ItemPair> parseFactrio(String path, ItemMappings<String, String> mappings) {
 			List<ItemPair> items = new List<ItemPair>();
 			String fullPath = Path.Combine(path, "script-output\\toMC.dat");
 			FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
@@ -178,17 +157,10 @@ namespace Factorio_MC_Bridge
 				StreamWriter sw = new StreamWriter(fs);
 				sw.WriteLine("");
 			}
-			//List<ItemPair> tempList = items;
-			for (int i = 0; i < items.Count; i++)
-			{
-				if (items[i].name.Equals("iron-plate"))
-				{
-					items[i].name = "minecraft:iron_ingot";
-				}
-				if (items[i].name.Equals("coal"))
-				{
-					items[i].name = "minecraft:coal";
-				}
+
+			//Remap Items to the opposing item
+			for (int i = 0; i < items.Count; i++){
+				items[i].name = mappings.facotrio[items[i].name];
 			}
 			return items;
 		}
@@ -196,8 +168,7 @@ namespace Factorio_MC_Bridge
 
 		public static void sendToMinecraft(List<ItemPair> items, String path) {
 			String fullPath = Path.Combine(path, "fromFactorio.dat");
-			//FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
-			//StreamReader sr = new StreamReader(fs, Encoding.Default);
+
 			while (true)
 			{
 				try
@@ -218,26 +189,6 @@ namespace Factorio_MC_Bridge
 				sw.WriteLine(itemToSend);
 			}
 			sw.Close();
-			//sr.Close();
-			//File.WriteAllText(fullPath, string.Empty);
-		}
-
-
-		public static List<ItemPair> remapFactorio(List<ItemPair> items)
-		{
-			List<ItemPair> tempList = items;
-			for (int i = 0; i < items.Count; i++)
-			{
-				if (items[i].name.Equals("iron-plate"))
-				{
-					items[i].name = "minecraft:iron_ingot";
-				}
-				if (items[i].name.Equals("coal"))
-				{
-					items[i].name = "minecraft:coal";
-				}
-			}
-			return tempList;
 		}
 
 		public static int pairContains(List<ItemPair> list, string itemName) {
