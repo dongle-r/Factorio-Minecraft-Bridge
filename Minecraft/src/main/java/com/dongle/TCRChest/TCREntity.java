@@ -3,6 +3,7 @@ package com.dongle.TCRChest;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -93,30 +94,45 @@ public class TCREntity extends TileEntity implements ITickable{
 					ItemStackHandler tempInv = (ItemStackHandler) this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 					while((str=br.readLine())!= null){
 						String[] split = str.split("~");
+						int _count = Integer.parseInt(split[1]);
 						for(int i = 0; i < tempInv.getSlots(); i++){
-							if(tempInv.getStackInSlot(i) != null){
-								ItemStack remainStack;
-								if(tempInv.getStackInSlot(i).getItem().getRegistryName().equals(split[0])){
-									ItemStack tempStack = tempInv.getStackInSlot(i);
-									if(tempStack.getCount() >= 64){
-										continue;
+
+							if(tempInv.getStackInSlot(i) != ItemStack.EMPTY){
+								String itemInSlotName = tempInv.getStackInSlot(i).getItem().getRegistryName().toString();
+								if((tempInv.getStackInSlot(i).getCount() < 64) && itemInSlotName.equals(split[0])){
+									Item tempItem = Item.getByNameOrId(split[0]);
+									ItemStack remainStack = new ItemStack(tempItem, _count);
+									remainStack = tempInv.insertItem(i, remainStack, false);
+									while(remainStack.getCount() > 0){
+										for(int j = i+1; j < tempInv.getSlots(); j++){
+											itemInSlotName = tempInv.getStackInSlot(j).getItem().getRegistryName().toString();
+											if(tempInv.getStackInSlot(j) != ItemStack.EMPTY && tempInv.getStackInSlot(j).getCount() < 64 && itemInSlotName.equals(split[0])){
+												remainStack = tempInv.insertItem(j, remainStack, false);
+												break;
+											}
+											else{
+												tempInv.insertItem(j, remainStack, false);
+												break;
+											}
+										}
+										break;
 									}
-									else{
-										tempStack.setCount(Integer.parseInt(split[1]));
-										remainStack = tempInv.insertItem(i, tempStack, false);
-										//Do something with overflow
-									}
+									break;
 								}
 							}
 							else{
 								Item tempItem = Item.getByNameOrId(split[0]);
 								ItemStack tempStack = new ItemStack(tempItem, Integer.parseInt(split[1]));
 								tempInv.insertItem(i, tempStack, false);
+								break;
 							}
 						}
 					}
+					br.close();
+					fileRead.close();
+					PrintWriter pw = new PrintWriter("fromFactorio.dat");
+					pw.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

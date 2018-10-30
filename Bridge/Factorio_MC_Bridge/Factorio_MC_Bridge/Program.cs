@@ -17,6 +17,7 @@ namespace Factorio_MC_Bridge
 	{
 		static void Main(string[] args)
 		{
+			Console.WriteLine("Starting Up!");
 			string startupDoc = Path.Combine(Environment.CurrentDirectory, "settings.txt");
 			String mcPath = "";
 			String facPath = "";
@@ -34,6 +35,7 @@ namespace Factorio_MC_Bridge
 			}
 			else
 			{
+				Console.WriteLine("Found paths. Beginning transfer");
 				FileStream fs = new FileStream(startupDoc, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite);
 				StreamReader sr = new StreamReader(fs, Encoding.Default);
 				mcPath = sr.ReadLine();
@@ -43,11 +45,18 @@ namespace Factorio_MC_Bridge
 			var rcon = new RCON(IPAddress.Parse("172.28.65.243"), 25525, "test");
 			while (true)
 			{
-				List<ItemPair> factorioItems = parseFactrio(facPath);
-				List<ItemPair> minecraftItems = parseMinecraft(mcPath);
-				sendToFactorio(minecraftItems, rcon);
-				sendToMinecraft(factorioItems, mcPath);
-				Thread.Sleep(1000);
+				try
+				{
+					List<ItemPair> factorioItems = parseFactrio(facPath);
+					List<ItemPair> minecraftItems = parseMinecraft(mcPath);
+					sendToFactorio(minecraftItems, rcon);
+					sendToMinecraft(factorioItems, mcPath);
+					Thread.Sleep(1000);
+				}
+				catch (Exception e) {
+					Console.WriteLine("Something went wrong. Moving past error.");
+					continue;
+				}
 			}
 		}
 
@@ -189,6 +198,20 @@ namespace Factorio_MC_Bridge
 			String fullPath = Path.Combine(path, "fromFactorio.dat");
 			//FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
 			//StreamReader sr = new StreamReader(fs, Encoding.Default);
+			while (true)
+			{
+				try
+				{
+					using (FileStream Fs = new FileStream(fullPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100))
+					{
+						break;
+					}
+				}
+				catch (IOException)
+				{
+					Thread.Sleep(100);
+				}
+			}
 			StreamWriter sw = new StreamWriter(fullPath, true);
 			for (int i = 0; i < items.Count; i++) {
 				String itemToSend = items[i].name + "~" + items[i].count;

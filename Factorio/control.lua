@@ -70,7 +70,8 @@ script.on_event({defines.events.on_tick},
                 if send.name == "send-chest" then
                     local inventory = send.get_inventory(defines.inventory.chest)
                     if not inventory.is_empty() then
-                        saveString = saveString .. inventory[1].name .. " : " .. inventory[1].count .. "\n"
+                        saveString = saveString .. inventory[1].name .. ":" .. inventory[1].count .. "\n"
+                        inventory.clear();
                     end
                 end
             end
