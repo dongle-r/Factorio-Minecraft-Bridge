@@ -24,7 +24,7 @@ public static final int GUI_ID = 1;
 	
 	public TCRBlock(){
 		super(Material.ROCK);
-		setUnlocalizedName(FMCBridge.MODID + ".tcrblock");
+		setTranslationKey(FMCBridge.MODID + ".tcrblock");
 		setRegistryName("tcrblock");
 		setCreativeTab(FMCBridge.fmcTab);
 	}

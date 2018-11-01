@@ -1,11 +1,13 @@
 package com.dongle.proxy;
 
 import com.dongle.FMCBridge.ModBlocks;
-import com.dongle.FMCBridge.ModItems;
+import com.dongle.command.ItemCommand;
 
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -14,6 +16,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preInit(FMLPreInitializationEvent e) {
         super.preInit(e);
+        ClientCommandHandler.instance.registerCommand(new ItemCommand());
     }
 
     @SubscribeEvent
@@ -21,4 +24,5 @@ public class ClientProxy extends CommonProxy {
     	ModBlocks.initModels();
     	//ModItems.initModels();
     }
+    
 }

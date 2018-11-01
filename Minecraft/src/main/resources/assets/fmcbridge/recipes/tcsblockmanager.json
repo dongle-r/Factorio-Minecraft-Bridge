@@ -1,0 +1,25 @@
+{ 
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AAA",
+    "ABA",
+    "AAA"  ],
+  "key": {
+    "A": [
+      {
+        "item": "minecraft:iron_ingot",
+        "data": 0
+      }
+    ],
+    "B": [
+      {
+        "item": "fmcbridge:tcsblock",
+        "data": 0
+      }
+    ]
+  },
+  "result": {
+    "item": "fmcbridge:tcsmanagerblock",
+    "data": 0
+  }
+}

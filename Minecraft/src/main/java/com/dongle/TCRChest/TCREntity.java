@@ -21,6 +21,7 @@ public class TCREntity extends TileEntity implements ITickable{
 	public static final int SIZE = 27;
 	private int entId;
 	boolean added = false;
+	private ItemStack itemLocked;
 	
 	public void setEntId(int x){
 		entId = x;
@@ -50,6 +51,9 @@ public class TCREntity extends TileEntity implements ITickable{
         if(compound.hasKey("entId")){
         	entId = compound.getInteger("entId");
         }
+        if(compound.hasKey("lockedItem")){
+        	itemLocked.deserializeNBT((NBTTagCompound) compound.getTag("lockedItem"));
+        }
     }
 	
     @Override
@@ -57,6 +61,7 @@ public class TCREntity extends TileEntity implements ITickable{
         super.writeToNBT(compound);
         compound.setTag("items", itemStackHandler.serializeNBT());
         compound.setInteger("entId", entId);
+        compound.setTag("lockedItem", itemLocked.serializeNBT());
         return compound;
     }
 	

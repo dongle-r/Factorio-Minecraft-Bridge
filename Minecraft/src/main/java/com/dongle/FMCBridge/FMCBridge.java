@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = FMCBridge.MODID, name = FMCBridge.MODNAME, version = FMCBridge.VERSION)
 public class FMCBridge
@@ -26,10 +27,13 @@ public class FMCBridge
     @Mod.Instance
     public static FMCBridge instance = new FMCBridge();
     public static CreativeTabs fmcTab = new CreativeTabs("FMC Bridge"){
-    	@Override
-    	public ItemStack getTabIconItem(){
+
+		@Override
+		public ItemStack createIcon() {
+			// TODO Auto-generated method stub
     		return new ItemStack(Items.BLAZE_ROD);
-    	}
+
+		}
     };
     
     
@@ -70,6 +74,7 @@ public class FMCBridge
     //This add is the ensure that the already placed blocks are added back to the list.
     public int addTCS(int id, TCSEntity ent){
     	tcsEntityList.put(id, ent);
+    	ent.setAdded(true);
     	return entId;
     }
     

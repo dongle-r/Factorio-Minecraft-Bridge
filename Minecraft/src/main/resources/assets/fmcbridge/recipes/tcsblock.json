@@ -1,0 +1,25 @@
+{ 
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AAA",
+    "ABA",
+    "AAA"  ],
+  "key": {
+    "A": [
+      {
+        "item": "minecraft:cobblestone",
+        "data": 0
+      }
+    ],
+    "B": [
+      {
+        "item": "minecraft:stone",
+        "data": 0
+      }
+    ]
+  },
+  "result": {
+    "item": "fmcbridge:tcsblock",
+    "data": 0
+  }
+}

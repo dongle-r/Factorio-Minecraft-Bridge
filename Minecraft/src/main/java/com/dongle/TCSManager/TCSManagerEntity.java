@@ -3,7 +3,9 @@ package com.dongle.TCSManager;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.dongle.FMCBridge.FMCBridge;
@@ -25,6 +27,7 @@ public class TCSManagerEntity  extends TileEntity implements ITickable{
 				ticks = 0;
 				Map<Integer, TCSEntity> entList = FMCBridge.instance.tcsEntityList;
 				Map<Item, Integer> itemList = new HashMap<Item, Integer>();
+				Map<Item, Integer> metaList = new HashMap<Item, Integer>();
 				try {
 					for(TCSEntity ent : entList.values()){
 						ItemStack tempInv = ent.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).getStackInSlot(0);
@@ -34,6 +37,7 @@ public class TCSManagerEntity  extends TileEntity implements ITickable{
 						else{
 							if(tempInv.getCount() > 0){
 								itemList.put(tempInv.getItem(), tempInv.getCount());
+								metaList.put(tempInv.getItem(), tempInv.getItem().getMetadata(tempInv));
 							}
 						}
 						tempInv.setCount(0);
@@ -43,7 +47,7 @@ public class TCSManagerEntity  extends TileEntity implements ITickable{
 					}
 					FileWriter fileWriter = new FileWriter("toFactorio.dat", true);
 					for(Item t : itemList.keySet()){
-						String writeString = t.getRegistryName() + "~" + itemList.get(t) + "\n";
+						String writeString = t.getRegistryName() + "|" + metaList.get(t) + "~" + itemList.get(t) + "\n";
 						fileWriter.write(writeString);
 					}
 					fileWriter.close();

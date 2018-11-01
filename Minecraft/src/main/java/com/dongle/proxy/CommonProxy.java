@@ -6,9 +6,9 @@ import com.dongle.TCRChest.TCRBlock;
 import com.dongle.TCRChest.TCREntity;
 import com.dongle.TCSChest.TCSBlock;
 import com.dongle.TCSChest.TCSEntity;
-import com.dongle.TCSChest.TCSItem;
 import com.dongle.TCSManager.TCSManagerBlock;
 import com.dongle.TCSManager.TCSManagerEntity;
+import com.dongle.command.ItemCommand;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -52,4 +53,5 @@ public class CommonProxy {
     	event.getRegistry().register(new ItemBlock(ModBlocks.tcrblock).setRegistryName(ModBlocks.tcrblock.getRegistryName()));
     	event.getRegistry().register(new ItemBlock(ModBlocks.tcsManagerBlock).setRegistryName(ModBlocks.tcsManagerBlock.getRegistryName()));
     }
+    
 }

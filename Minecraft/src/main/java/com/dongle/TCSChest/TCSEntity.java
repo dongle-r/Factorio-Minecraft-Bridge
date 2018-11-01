@@ -3,6 +3,7 @@ package com.dongle.TCSChest;
 import com.dongle.FMCBridge.FMCBridge;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -45,6 +46,7 @@ public class TCSEntity extends TileEntity implements ITickable {
         if(compound.hasKey("entId")){
         	entId = compound.getInteger("entId");
         }
+
     }
 	
     @Override
@@ -52,6 +54,7 @@ public class TCSEntity extends TileEntity implements ITickable {
         super.writeToNBT(compound);
         compound.setTag("items", itemStackHandler.serializeNBT());
         compound.setInteger("entId", entId);
+
         return compound;
     }
 	
