@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Factorio_MC_Bridge
 {
-	class ItemMappings<T1, T2>{
+	class DualDictionary<T1, T2>{
 		private Dictionary<T1, T2> _forward = new Dictionary<T1, T2>();
 		private Dictionary<T2, T1> _reverse = new Dictionary<T2, T1>();
 
-		public ItemMappings(){
+		public DualDictionary(){
 			this.minecraft = new Indexer<T1, T2>(_forward);
 			this.facotrio = new Indexer<T2, T1>(_reverse);
 		}

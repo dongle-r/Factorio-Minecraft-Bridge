@@ -10,10 +10,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -41,15 +43,10 @@ public static final int GUI_ID = 1;
 	
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta){
-		return new TCREntity();
-	}
-	/*
-	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta){
-		TCSEntity temp = new TCSEntity();
+		TCREntity temp = new TCREntity();
 		int _entId;
 		if(!worldIn.isRemote){
-			_entId = FMCBridge.instance.addTCS(temp);
+			_entId = FMCBridge.instance.addTCR(temp);
 			temp.setEntId(_entId);
 			temp.setAdded(true);
 			System.out.println("Adding from createNew");
@@ -57,9 +54,7 @@ public static final int GUI_ID = 1;
 		}
 		return temp;
 	}
-	*/
 	
-	/*
 	@Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
@@ -67,26 +62,57 @@ public static final int GUI_ID = 1;
         { 
         	if(!worldIn.isRemote){
         		TileEntity tileEnt = worldIn.getTileEntity(pos);
-        		if(tileEnt instanceof TCSEntity){
-        			TCSEntity tcsEnt = (TCSEntity)tileEnt;
+        		if(tileEnt instanceof TCREntity){
+        			TCREntity tcrEnt = (TCREntity)tileEnt;
             		System.out.println("Sending Remove from Block with entID: " + worldIn);
-                	FMCBridge.instance.removeTCS(tcsEnt.getEntId());
+                	FMCBridge.instance.removeTCR(tcrEnt.getEntId());
         		}
         	}
             worldIn.removeTileEntity(pos);
         }
     }
-    */
+	
+
 	
 	@Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		if(worldIn.isRemote){
 			return true;
 		}
+		
 		TileEntity te = worldIn.getTileEntity(pos);
 		if(!(te instanceof TCREntity)){
 			return false;
 		}
+	
+		
+		if(playerIn.getHeldItemMainhand() != ItemStack.EMPTY){
+			if((te instanceof TCREntity)){
+				ItemStack heldItem = playerIn.getHeldItemMainhand();
+				String lockString = "";
+				if(heldItem.getItem().getMetadata(heldItem) != 0){
+					lockString = heldItem.getItem().getRegistryName() + "|" + heldItem.getItem().getMetadata(heldItem);
+					((TCREntity) te).setItemLock(lockString);
+					playerIn.sendMessage(new TextComponentTranslation("Locking to receive only held item: " + lockString));
+					return true;
+				}
+				else{
+					lockString = heldItem.getItem().getRegistryName().toString();
+					((TCREntity) te).setItemLock(lockString);
+					playerIn.sendMessage(new TextComponentTranslation("Locking to receive only held item: " + lockString));
+					return true;
+				}
+			}
+		}
+		else if(playerIn.isSneaking() && playerIn.getHeldItemMainhand() == ItemStack.EMPTY){
+			if((te instanceof TCREntity)){
+				((TCREntity) te).setItemLock("");
+				System.out.println("Unlocking receiving item.");
+				playerIn.sendMessage(new TextComponentTranslation("Unlocking receiving item."));
+				return true;
+			}
+		}
+		
 		playerIn.openGui(FMCBridge.instance, GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}

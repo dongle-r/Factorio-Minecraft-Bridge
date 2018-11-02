@@ -12,6 +12,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class TCR extends Container {
+	
 	private TCREntity te;
 	
 	public TCR(IInventory playerInventory, TCREntity te){
