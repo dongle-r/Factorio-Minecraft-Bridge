@@ -12,6 +12,7 @@ import com.dongle.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -56,6 +57,7 @@ public class FMCBridge
     
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
+    	MinecraftForge.EVENT_BUS.register( new WorldLoadEvent());
         proxy.postInit(e);
     }
     

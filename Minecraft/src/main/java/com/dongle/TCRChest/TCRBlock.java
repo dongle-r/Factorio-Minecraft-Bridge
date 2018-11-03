@@ -94,12 +94,14 @@ public static final int GUI_ID = 1;
 					lockString = heldItem.getItem().getRegistryName() + "|" + heldItem.getItem().getMetadata(heldItem);
 					((TCREntity) te).setItemLock(lockString);
 					playerIn.sendMessage(new TextComponentTranslation("Locking to receive only held item: " + lockString));
+					((TCREntity) te).markDirty();
 					return true;
 				}
 				else{
 					lockString = heldItem.getItem().getRegistryName().toString();
 					((TCREntity) te).setItemLock(lockString);
 					playerIn.sendMessage(new TextComponentTranslation("Locking to receive only held item: " + lockString));
+					((TCREntity) te).markDirty();
 					return true;
 				}
 			}
@@ -109,6 +111,7 @@ public static final int GUI_ID = 1;
 				((TCREntity) te).setItemLock("");
 				System.out.println("Unlocking receiving item.");
 				playerIn.sendMessage(new TextComponentTranslation("Unlocking receiving item."));
+				((TCREntity) te).markDirty();
 				return true;
 			}
 		}
