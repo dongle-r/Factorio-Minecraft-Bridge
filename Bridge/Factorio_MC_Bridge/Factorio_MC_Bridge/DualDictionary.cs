@@ -12,6 +12,7 @@ namespace Factorio_MC_Bridge
 	class DualDictionary<T1, T2>{
 		private Dictionary<T1, T2> _forward = new Dictionary<T1, T2>();
 		private Dictionary<T2, T1> _reverse = new Dictionary<T2, T1>();
+		private int count;
 
 		public DualDictionary(){
 			this.minecraft = new Indexer<T1, T2>(_forward);
@@ -32,6 +33,11 @@ namespace Factorio_MC_Bridge
 		public void Add(T1 t1, T2 t2){
 			_forward.Add(t1, t2);
 			_reverse.Add(t2, t1);
+			count++;
+		}
+
+		public int Count() {
+			return count;
 		}
 
 		public Indexer<T1, T2> minecraft { get; private set; }

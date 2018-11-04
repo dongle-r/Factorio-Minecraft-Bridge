@@ -58,7 +58,6 @@ public class TCRManagerEntity  extends TileEntity implements ITickable{
 							if(tempInv.getStackInSlot(i) != ItemStack.EMPTY){
 								String itemInSlotName = tempInv.getStackInSlot(i).getItem().getRegistryName().toString();
 								if((tempInv.getStackInSlot(i).getCount() < 64) && itemInSlotName.equals(split[0]) && tempInv.getStackInSlot(i).getItem().getDamage(tempInv.getStackInSlot(i)) == Integer.parseInt(split[1])){
-									System.out.println("Found some iron, inserting into chest");
 									Item tempItem = Item.getByNameOrId(split[0]);
 									ItemStack remainStack = new ItemStack(tempItem, _count);
 									remainStack.setItemDamage(Integer.parseInt(split[1]));
@@ -100,4 +99,3 @@ public class TCRManagerEntity  extends TileEntity implements ITickable{
 		}
 	}
 }
-

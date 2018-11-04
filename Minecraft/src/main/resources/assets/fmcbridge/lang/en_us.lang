@@ -1,5 +1,6 @@
 tile.fmcbridge.tcsblock.name=Sender
 tile.fmcbridge.tcrblock.name=Receiver
 tile.fmcbridge.tcsmanagerblock.name=Sender Manager
+tile.fmcbridge.tcrmanagerblock.name=Receiving Manager
 
 itemGroup.FMC Bridge=Factorio Minecraft Bridge

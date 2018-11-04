@@ -62,7 +62,9 @@ public class TCREntity extends TileEntity implements ITickable{
         	entId = compound.getInteger("entId");
         }
         if(compound.hasKey("lockedItem")){
+        	
         	itemLocked = compound.getString("lockedItem");
+        	System.out.println("Read the locked item: " + itemLocked);
         }
     }
 	
@@ -71,7 +73,10 @@ public class TCREntity extends TileEntity implements ITickable{
         super.writeToNBT(compound);
         compound.setTag("items", itemStackHandler.serializeNBT());
         compound.setInteger("entId", entId);
+        
+    	System.out.println("Writing the locked item : " + itemLocked);
         compound.setString("lockedItem", itemLocked);
+        
         return compound;
     }
 	
