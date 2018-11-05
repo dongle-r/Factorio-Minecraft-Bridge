@@ -115,4 +115,14 @@ public class TCREntity extends TileEntity implements ITickable{
 			}
 		}
 	}
+	
+	public boolean checkFull(){
+		ItemStackHandler tempInv = (ItemStackHandler) this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		for(int i = 0; i < SIZE; i++){
+			if(tempInv.getStackInSlot(i).getCount() < 64){
+				return false;
+			}
+		}
+		return true;
+	}
 }

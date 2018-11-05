@@ -39,19 +39,19 @@ public class TCRManagerEntity  extends TileEntity implements ITickable{
 						String[] split = str.split("[~|]");
 						int _count = Integer.parseInt(split[2]);
 						for(TCREntity ent : entList.values()){
-							if(ent.getItemLock().equals(split[0])){
+							if(ent.getItemLock().equals(split[0]) && !ent.checkFull()){
 								tempInv = (ItemStackHandler) ent.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 							}
 						}
 						if(tempInv == null){
 							for(TCREntity ent : entList.values()){
-								if(ent.getItemLock() == ""){
+								if(ent.getItemLock() == "" && !ent.checkFull()){
 									tempInv = (ItemStackHandler) ent.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 								}
 							}
 						}
 						if(tempInv == null){
-							System.out.println("cannot insert, all chests locked");
+							System.out.println("cannot insert, all chests locked or full");
 							break;
 						}
 						for(int i = 0; i < tempInv.getSlots(); i++){
