@@ -116,8 +116,6 @@ namespace Factorio_MC_Bridge
 		/// FACTORIO
 		/// Reading and parsing for factorio 
 		/// FACTORIO
-
-
 		public static async void sendToFactorio(List<ItemPair> items, RCON rcon) {
 			if (items.Count > 0) {
 				for (int i = 0; i < items.Count; i++) {
