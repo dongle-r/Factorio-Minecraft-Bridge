@@ -1,6 +1,8 @@
 package com.dongle.FMCBridge;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -58,6 +60,24 @@ public class FMCBridge
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
     	MinecraftForge.EVENT_BUS.register( new WorldLoadEvent());
+    	File fromFile = new File("fromFactorio.dat");
+    	File toFile = new File("toFactorio.dat");
+    	try {
+			if(fromFile.createNewFile()){
+				System.out.println("From File Created");
+			}
+			else{
+				System.out.println("To File Found");
+			}
+			if(toFile.createNewFile()){
+				System.out.println("To File Created");
+			}
+			else{
+				System.out.println("From File Found");
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
         proxy.postInit(e);
     }
     
