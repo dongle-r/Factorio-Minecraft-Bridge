@@ -1,4 +1,4 @@
-
+require "util"
 local function ONLOAD()
     global.transferChests = global.transferChests or {}
 end
@@ -41,7 +41,19 @@ local function ONREMOVE( event )
 end
 
 
+
+
 script.on_init(ONLOAD)
+
+commands.add_command("itemData", {"cmd.find-item"}, function(event)
+    local player = game.players[event.player_index]
+    if player.cursor_stack.valid_for_read then
+        player.print(player.cursor_stack.name)
+    else
+        player.print("You need to be holding an item!")
+    end
+end)
+
 --script.on_init(ONLOADREC)
 
 script.on_event( defines.events.on_built_entity, ONBUILD )
