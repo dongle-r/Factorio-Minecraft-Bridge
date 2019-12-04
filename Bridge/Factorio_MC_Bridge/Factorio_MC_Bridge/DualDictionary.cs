@@ -1,5 +1,3 @@
-﻿//Thank you to user Enigmativity on Stack Overflow for the solution to the bi-directional dictionary
-//https://stackoverflow.com/questions/10966331/two-way-bidirectional-dictionary-in-c
 
 using System;
 using System.Collections.Generic;
