@@ -1,0 +1,25 @@
+package com.dongle.FMCBridge;
+
+import com.dongle.TCRChest.TCRBlock;
+import com.dongle.TCSChest.TCSBlock;
+
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+public class ModBlocks {
+
+	@GameRegistry.ObjectHolder("fmcbridge:tcsblock")
+	public static TCSBlock tcsblock;
+	
+	@GameRegistry.ObjectHolder("fmcbridge:tcrblock")
+	public static TCRBlock tcrblock;
+	
+	
+	@SideOnly(Side.CLIENT)
+	public static void initModels(){
+		tcsblock.initModel();
+		tcrblock.initModel();
+	}
+	
+}

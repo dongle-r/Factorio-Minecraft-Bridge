@@ -1,0 +1,11 @@
+{
+    "name": "fmc-bridge",
+    "version": "1.0.0",
+    "title": "Factorio Minecraft Bridge",
+    "author": "Creator",
+    "contact": "",
+    "homepage": "",
+    "factorio_version": "1.0",
+    "dependencies": ["base >= 1.0"],
+    "description": "Send and Receive Items, Fluid, and Power with Minecraft"
+}
